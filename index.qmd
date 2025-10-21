@@ -6,13 +6,13 @@ title: "meteo france"
 title: "Analyse de la performance d’innovation des entreprises et leur demande de compétences"
 ---
 
-# Bienvenue ! 
+# Bienvenue !
 
 **Le changement climatique et les catastrophes naturelles.**
 
 Ce projet, réalisé par BRISSON Thomas, BASSET Maxence, DIAZ Mathys, NASSUR CHEIKH Izdihar et RODRIGUEZ Jason, explore la relation entre le changement climatique et la fréquence ainsi que les conséquences des catastrophes climatiques.
 
-![Description de l'image](5 natural disasters that call for climate action.jpg){alt="Description de l'image" style="display: block; margin: 0 auto; border-radius: 10px;"}
+![Description de l'image](5%20natural%20disasters%20that%20call%20for%20climate%20action.jpg){style="display: block; margin: 0 auto; border-radius: 10px;"}
 
 # Introduction
 
