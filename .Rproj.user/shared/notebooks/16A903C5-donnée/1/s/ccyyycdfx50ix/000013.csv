@@ -1,4 +1,0 @@
-"0","donnee <- fread(""final_dataframe.csv"")"
-"2","Erreur dans fread(""final_dataframe.csv"") : 
-  File 'final_dataframe.csv' does not exist or is non-readable. getwd()=='C:/Users/Morgane/Documents/meteo france'
-"
