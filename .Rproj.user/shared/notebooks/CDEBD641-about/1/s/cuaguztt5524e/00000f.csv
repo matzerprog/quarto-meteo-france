@@ -1,0 +1,3 @@
+"0","library(data.table)"
+"0","data <- fread(""synop.csv.gz"")"
+"0",""

@@ -1,5 +1,0 @@
----
-title: "graphique sur les stat"
----
-
-test 1 sur graph

@@ -1,0 +1,65 @@
+---
+title: "meteo france"
+---
+
+---
+title: "Analyse de la performance d’innovation des entreprises et leur demande de compétences"
+---
+
+# Bienvenue !
+
+**Le changement climatique et les catastrophes naturelles.**
+
+Ce projet, réalisé par BRISSON Thomas, BASSET Maxence, DIAZ Mathys, NASSUR CHEIKH Izdihar et RODRIGUEZ Jason, explore la relation entre le changement climatique et la fréquence ainsi que les conséquences des catastrophes climatiques.
+
+![Description de l'image](5%20natural%20disasters%20that%20call%20for%20climate%20action.jpg){style="display: block; margin: 0 auto; border-radius: 10px;"}
+
+# Introduction
+
+:::: intro-section
+<p style="font-size: 1.1em; line-height: 1.6; color: #555;">
+
+Ce projet s'inscrit dans une démarche d’analyse approfondie des interactions entre la <strong>performance d’innovation des entreprises</strong> et leurs <strong>dynamiques de recrutement</strong>, dans un contexte où la compétitivité technologique repose de plus en plus sur l’acquisition de compétences spécialisées. L'objectif principal est d'étudier comment l’innovation, mesurée par le nombre de brevets déposés, influence la demande en compétences spécifiques, en particulier dans les domaines de la <strong>data science</strong> et du <strong>machine learning</strong>.
+
+</p>
+
+------------------------------------------------------------------------
+
+## Objectifs Stratégiques
+
+<ul style="font-size: 1.05em; line-height: 1.6; color: #333; margin-left: 20px;">
+
+<li>Les entreprises les plus innovantes proposent-elles des <strong>salaires plus élevés</strong> ?</li>
+
+<li>Ces entreprises sont-elles davantage en quête de compétences en <strong>data science</strong> et en <strong>machine learning</strong> ?</li>
+
+<li>Certains secteurs ou domaines technologiques se distinguent-ils par une forte corrélation entre <strong>innovation</strong> et <strong>compétences recherchées</strong> ?</li>
+
+</ul>
+
+------------------------------------------------------------------------
+
+## Données Mobilisées
+
+::: {style="background-color: #f9f9f9; padding: 15px; border-left: 5px solid #406f71; border-radius: 5px;"}
+<p style="font-size: 1.05em; line-height: 1.6; color: #444;">
+
+Les données mobilisées dans ce projet concernent exclusivement les <strong>entreprises françaises</strong> sur la période <strong>2010-2020</strong>, et se divisent en deux grands ensembles :
+
+</p>
+
+1.  **Base brevets (base_brevets)**\
+    Issue de l'OCDE et de la classification internationale des brevets (IPC), cette base recense les dépôts de brevets des entreprises françaises. Elle permet d'identifier les domaines technologiques les plus représentés grâce aux codes IPC, ainsi que les localisations géographiques principales des activités de dépôt.
+
+2.  **Base offres d’emploi (base_emp)**\
+    Ces données ont été constituées dans le cadre d’un projet de <em>web scraping</em> mené par des étudiants du <strong>Master M1-IREF</strong> (promotion 2023-2024). Elles rassemblent des informations sur les offres d’emploi liées au métier de "data scientist", incluant les <strong>compétences recherchées</strong>, les <strong>expériences demandées</strong> et les <strong>niveaux de rémunération</strong>.
+
+------------------------------------------------------------------------
+
+<p style="font-size: 1.05em; line-height: 1.6; color: #555;">
+
+Ces deux bases seront croisées pour former une base d’appariement (**base_emp_inno**), intégrant à la fois les caractéristiques d’innovation des entreprises et leurs besoins en recrutement.
+
+</p>
+:::
+::::

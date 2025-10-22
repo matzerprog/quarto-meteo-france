@@ -1,0 +1,13 @@
+---
+title: "graphique sur les stat"
+---
+
+```{r}
+library(readr)
+catastrophes <- read_csv("catastrophes.csv")
+synop_csv <- read_csv("synop.csv.gz")
+```
+
+```{r}
+donnee <- fread("final_dataframe.csv")
+```
