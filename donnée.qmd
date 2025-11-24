@@ -5,5 +5,3 @@ title: "graphique sur les stat"
 test 1 sur graph
 
 test 2 esclavagisme
-
-eeeee
