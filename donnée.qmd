@@ -1,7 +1,35 @@
 ---
-title: "graphique sur les stat"
+title: "Analyse de données"
 ---
 
-test 1 sur graph
 
-test 2 esclavagisme
+Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc.
+Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
+
+
+```{r}
+library(dplyr)
+
+df_year <- final_dataframe |>
+  group_by(year) |>
+  summarise(total_disasters_year = sum(total_disasters, na.rm = TRUE))
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(df_year, aes(x = factor(year), y = total_disasters_year)) +
+  geom_col(fill = "orange", width = 0.7) +
+  labs(title = "Nombre de désastres climatiques par an",
+       x = "Année", y = "Nombre de désastres") +
+  scale_x_discrete(
+    labels = function(x) substr(x, 3, 4) # Prend les deux derniers chiffres
+  ) +
+  theme_classic(base_size = 14)+
+  scale_y_continuous(
+    breaks = seq(0, 10, 2)  # de 0 à 10, par pas de 2 ; ajuste si besoin
+  ) 
+
+```
+De ce graphique il est assez dur de détecter une relation claire entre le réchauffement climatique et le nombre de désastre climatique chaque année en France. En effet il y a des années avec beaucoup de désastres comme en 1999 (8 désastres majeur) ou en 2019 (10 désastres majeur) et des années où il y en a très peu comme en 2004, 2012 et 2016 où il y en a eu seulement 1.
+Cependant on remarque tout de même que même si il y a pas de lien direct entre la quantité de désastre et le réchauffement climatique, il y a tout de même une potentielle hausse dans leur conséquences avec 
