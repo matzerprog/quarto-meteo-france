@@ -78,19 +78,48 @@ On observe toutefois qu’à partir de 2018, le nombre moyen de désastres sembl
 
 Cependant, même si le réchauffement climatique n’a pas d’effet direct clairement visible sur la fréquence des désastres climatiques au cours de la période analysée, il a bel et bien un impact sur les conséquences de ces désastres. En effet, nous allons voir que le réchauffement aggrave la dureté des conséquences : les événements deviennent plus intenses et leurs effets sur les populations s’amplifient.
 
+```{r}
+df_morts_mois <- final_dataframe %>%
+  filter(year != 2015) %>%  # Seule l'année 2015 est exclue
+  group_by(month) %>%
+  summarise(total_deaths_month = sum(total_deaths))
 
+ggplot(df_morts_mois, aes(x = factor(month), y = total_deaths_month, fill = total_deaths_month)) +
+  geom_bar(stat = "identity", color = "black") +
+  coord_polar(start = 0) +
+  scale_fill_gradient(low = "yellow", high = "red") +
+  labs(
+    title = "Nombre de morts par mois",
+    x = "Mois",
+    y = "Morts"
+  ) +
+  theme_minimal(base_size = 16)
+```
+Typiquement, ce graphique mettant en relation le nombre de morts dus aux désastres écologiques et les mois de l’année fait immédiatement ressortir la surreprésentation du nombre de décès en août. Cette donnée permet d’identifier facilement quel désastre écologique a été le plus mortel en France ces dernières années : il s'agit évidemment de la canicule. En effet, la canicule est une des conséquences directes du réchauffement climatique : avec la hausse générale des températures, les épisodes de chaleur extrême deviennent plus fréquents, plus intenses et durent plus longtemps.
 
+Par exemple, la canicule de 2003 reste la plus meurtrière de l’histoire en France. Selon des sources officielles (Inserm, Météo France), on estime le nombre de décès à environ 19490 au mois d’août 2003 suite à cet épisode climatique exceptionnel. Ce triste bilan a incité toute la société française à prendre des mesures pour se protéger lors des futures périodes de fortes chaleurs, afin d’éviter qu’une telle catastrophe humaine ne se reproduise. Il s’agit d’une véritable prise de conscience collective.
 
+```{r}
+df_damages_bubble <- final_dataframe %>%
+  group_by(year) %>%
+  summarise(total_damages_year = sum(total_damages))
 
+ggplot(df_damages_bubble, aes(x = year, y = 1, size = total_damages_year)) +
+  geom_point(color = "coral", alpha = 0.7) +
+  scale_size_continuous(name = "Dégâts (USD)", range = c(3, 18)) +
+  labs(
+    title = "Dégâts matériels annuels (USD)",
+    x = "Année",
+    y = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
+```
 
+Ce dernier graphique montre la valeur en dollars des dégâts causés par les catastrophes climatiques. Il prend en compte toutes les dépenses liées à ces événements, exprimées en milliers de dollars. Ce que l’on constate surtout, c’est qu’au fil des années, le montant des dépenses suite aux catastrophes naturelles tend à augmenter. On observe qu’avant les années 2010, certaines années présentaient des volumes de dépenses particulièrement élevés, mais il existait aussi des années sans aucune dépense. À partir de 2010, même si le volume des dépenses fluctue moins fortement, il subsiste à un niveau minimal de dépenses chaque année, signe que les dégâts sont désormais quasi systématiques. 
 
+Ce constat est d’autant plus frappant si l’on prend en compte le progrès technique dans le secteur du bâtiment par exemple. En effet, tous les nouveaux bâtiments sont conçus pour mieux résister aux risques écologiques propres à leur région. Pourtant, il y a chaque année de grosses dépenses liées aux tempêtes ou autres événements extrêmes, ce qui traduit la violence croissante des catastrophes récentes, dépassant les avancées techniques et les dispositifs de prévention mis en place.
 
-
-
-
-
-
-
-
+En effet, si les catastrophes climatiques conservaient chaque année un même niveau d’intensité, le montant des dépenses liées à leurs impacts aurait tendance à diminuer progressivement, grâce au progrès technique et aux mesures d’adaptation (construction plus résistante, infrastructures modernisées, meilleures préventions). C'est pourquoi on en déduit donc que les catastrophes climatiques sont de plus en plus violentes.
 
