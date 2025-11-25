@@ -2,21 +2,63 @@
 title: "Analyse de données"
 ---
 
-
 Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc.
 Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
 
-
 ```{r}
 library(dplyr)
-
-df_year <- final_dataframe |>
-  group_by(year) |>
-  summarise(total_disasters_year = sum(total_disasters, na.rm = TRUE))
+library(ggplot2)
 ```
 
 ```{r}
-library(ggplot2)
+df_temp_annuelle <- final_dataframe %>%
+  group_by(year) %>%
+  summarise(mean_celsius_year = mean(mean_celsius, na.rm = TRUE))
+
+ggplot(df_temp_annuelle, aes(x = factor(year), y = mean_celsius_year)) +
+  geom_col(fill = "royalblue", width = 0.7) +
+  labs(
+    title = "Température moyenne annuelle",
+    x = "Année",
+    y = "Température moyenne (°C)"
+  ) +
+  scale_x_discrete(labels = function(x) substr(x, 3, 4)) +  # Affiche les deux derniers chiffres de l'année
+  theme_classic(base_size = 15)
+```
+
+
+Ce premier graphique illustre la difficulté d’établir un lien direct entre le réchauffement climatique et l’évolution des désastres climatiques sur une période d’observation relativement courte. Bien que le réchauffement global soit avéré scientifiquement et mesurable sur le long terme, les différences de température entre années successives restent minimes sur une échelle annuel d'une dizaine d'année (seuelement).
+
+Le seul moyen d'observer un léger changement c'est si on isole des années pour les comparer.
+
+```{r}
+df_compare <- final_dataframe %>%
+  filter(year %in% c(1996, 2022)) %>%
+  mutate(annee = factor(year)) %>%
+  select(annee, month, mean_celsius, global_month_avg)
+
+ggplot(df_compare, aes(x = global_month_avg, y = mean_celsius, color = annee, shape = annee)) +
+  geom_point(size = 3) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey40") +
+  labs(
+    title = "Température locale mensuelle vs globale : comparaison 1996 & 2022",
+    x = "Température globale du mois (°C)",
+    y = "Température locale du mois (°C)",
+    color = "Année",
+    shape = "Année"
+  ) +
+  theme_minimal(base_size = 15)
+```
+Typiquement, dans ce graphique, on isole l'année 1996 (la première de notre jeu de données) et l'année 2022 (la dernière du même jeu). Chaque point représente un mois de l'année en question. La diagonale en pointillés représente la situation d’égalité : c'est la ligne où la température locale mensuelle serait exactement égale à la température globale moyenne pour ce mois. Autrement dit, chaque point au-dessus de cet axe correspond à un mois plus chaud que la moyenne globale du jeu, et inversement pour les points situés en dessous.
+
+L'analyse directe que l'on peut tirer de ce graphique est la suivante : en 1996, il a globalement fait plus froid que la moyenne du jeu de données pour presque chaque mois, tandis qu’en 2022, il a fait plus globalement plus chaud pour les mêmes mois. Ce type de comparaison permet de visualiser très concrètement le réchauffement climatique sur la période considérée.
+
+Cependant, le réchauffement climatique est déjà un phénomène établi par la science ; il convient donc d’adopter comme point de départ, pour la suite de notre analyse, l'hypothèse que la période étudiée est bien marquée par une tendance au réchauffement.
+
+```{r}
+df_year <- final_dataframe |>
+  group_by(year) |>
+  summarise(total_disasters_year = sum(total_disasters, na.rm = TRUE))
 
 ggplot(df_year, aes(x = factor(year), y = total_disasters_year)) +
   geom_col(fill = "orange", width = 0.7) +
@@ -29,48 +71,26 @@ ggplot(df_year, aes(x = factor(year), y = total_disasters_year)) +
   scale_y_continuous(
     breaks = seq(0, 10, 2)  # de 0 à 10, par pas de 2 ; ajuste si besoin
   ) 
-
 ```
-De ce graphique il est assez dur de détecter une relation claire entre le réchauffement climatique et le nombre de désastre climatique chaque année en France. En effet il y a des années avec beaucoup de désastres comme en 1999 (8 désastres majeur) ou en 2019 (10 désastres majeur) et des années où il y en a très peu comme en 2004, 2012 et 2016 où il y en a eu seulement 1.
-Cependant on remarque tout de même que même si il y a pas de lien direct entre le nombre de désastre sur une année et le réchauffement climatique, il y a tout de même une hausse probable dans la violence des désastres et leurs conséquences.
-On remarque également qu'à partir de 2018, il y a tout de même plus de désastre chaque année.
+Ce graphique illustre la difficulté à observer le réchauffement climatique à travers la fréquence des désastres sur la période étudiée. En effet, on remarque que le nombre de désastres climatiques varie fortement d'une année à l'autre et dépend probablement d'autres facteurs que la seule température moyenne. Il est important de préciser que nous ne disons pas qu’il n’existe aucun lien entre le réchauffement climatique et la fréquence des désastres écologiques. Nous constatons simplement qu’il est difficile de discerner un lien direct entre les deux sur cette période relativement courte.
 
-```{r}
-library(dplyr)
+On observe toutefois qu’à partir de 2018, le nombre moyen de désastres semble globalement plus élevé que celui des années précédentes.
 
-# Crée la table annuelle avec le total des désastres ET des morts par an
-df_disasters_deaths <- final_dataframe %>%
-  group_by(year) %>%
-  summarise(
-    total_disasters_year = sum(total_disasters),
-    total_deaths_year = sum(total_deaths)
-  )
+Cependant, même si le réchauffement climatique n’a pas d’effet direct clairement visible sur la fréquence des désastres climatiques au cours de la période analysée, il a bel et bien un impact sur les conséquences de ces désastres. En effet, nous allons voir que le réchauffement aggrave la dureté des conséquences : les événements deviennent plus intenses et leurs effets sur les populations s’amplifient.
 
-```
 
-```{r}
-library(dplyr)
-library(ggplot2)
 
-# Suppression de l'année 2003
-df_disasters_deaths_no2003 <- final_dataframe %>%
-  group_by(year) %>%
-  summarise(
-    total_disasters_year = sum(total_disasters),
-    total_deaths_year = sum(total_deaths)
-  ) %>%
-  filter(year != 2003)
 
-# Nuage de points sans 2003
-ggplot(df_disasters_deaths_no2003, aes(x = total_disasters_year, y = total_deaths_year)) +
-  geom_point(size = 3, color = "darkred", alpha = 0.7) +
-  geom_smooth(method = "lm", se = TRUE, color = "navy", linetype = "dashed") +
-  labs(
-    title = "Relation entre désastres et morts (hors 2003)",
-    x = "Nombre de désastres climatiques",
-    y = "Nombre de morts"
-  ) +
-  theme_minimal(base_size = 15)
 
-```
+
+
+
+
+
+
+
+
+
+
+
 
