@@ -32,4 +32,45 @@ ggplot(df_year, aes(x = factor(year), y = total_disasters_year)) +
 
 ```
 De ce graphique il est assez dur de détecter une relation claire entre le réchauffement climatique et le nombre de désastre climatique chaque année en France. En effet il y a des années avec beaucoup de désastres comme en 1999 (8 désastres majeur) ou en 2019 (10 désastres majeur) et des années où il y en a très peu comme en 2004, 2012 et 2016 où il y en a eu seulement 1.
-Cependant on remarque tout de même que même si il y a pas de lien direct entre la quantité de désastre et le réchauffement climatique, il y a tout de même une potentielle hausse dans leur conséquences avec 
+Cependant on remarque tout de même que même si il y a pas de lien direct entre le nombre de désastre sur une année et le réchauffement climatique, il y a tout de même une hausse probable dans la violence des désastres et leurs conséquences.
+On remarque également qu'à partir de 2018, il y a tout de même plus de désastre chaque année.
+
+```{r}
+library(dplyr)
+
+# Crée la table annuelle avec le total des désastres ET des morts par an
+df_disasters_deaths <- final_dataframe %>%
+  group_by(year) %>%
+  summarise(
+    total_disasters_year = sum(total_disasters),
+    total_deaths_year = sum(total_deaths)
+  )
+
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Suppression de l'année 2003
+df_disasters_deaths_no2003 <- final_dataframe %>%
+  group_by(year) %>%
+  summarise(
+    total_disasters_year = sum(total_disasters),
+    total_deaths_year = sum(total_deaths)
+  ) %>%
+  filter(year != 2003)
+
+# Nuage de points sans 2003
+ggplot(df_disasters_deaths_no2003, aes(x = total_disasters_year, y = total_deaths_year)) +
+  geom_point(size = 3, color = "darkred", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "navy", linetype = "dashed") +
+  labs(
+    title = "Relation entre désastres et morts (hors 2003)",
+    x = "Nombre de désastres climatiques",
+    y = "Nombre de morts"
+  ) +
+  theme_minimal(base_size = 15)
+
+```
+
