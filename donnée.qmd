@@ -5,6 +5,14 @@ title: "Analyse par les graphiques"
 Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc. Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
 
 ```{r}
+chemin_fichier <- "D:/Users/Maxence/Documents/M1 IREF/quarto-meteo-france/donnee et data frame final/final_dataframe.csv"
+
+final_dataframe <- read_csv(chemin_fichier)
+
+head(final_dataframe)
+```
+
+```{r}
 library(dplyr)
 library(ggplot2)
 ```

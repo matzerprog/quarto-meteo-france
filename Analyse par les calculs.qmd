@@ -4,12 +4,14 @@ title: "Analyse par les calculs"
 
 ```         
 ```
-
 ```{r}
 library(readr)
+library(dplyr)
+library(knitr)
+```
 
-# Remplacez ceci par VOTRE chemin que vous venez de copier
-# N'oubliez pas de changer les \ en /
+```{r}
+
 chemin_fichier <- "D:/Users/Maxence/Documents/M1 IREF/quarto-meteo-france/donnee et data frame final/final_dataframe.csv"
 
 final_dataframe <- read_csv(chemin_fichier)
@@ -17,17 +19,11 @@ final_dataframe <- read_csv(chemin_fichier)
 head(final_dataframe)
 ```
 
-```{r}
-# Regardez vos noms de colonnes exacts
-colnames(final_dataframe)
-```
+
 
 Transformation en données annuel pour l'analyse
 
 ```{r}
-library(dplyr)
-library(knitr)
-
 # On crée un résumé par année (Somme des catastrophes, Moyenne des températures)
 df_annuel <- final_dataframe %>%
   group_by(year) %>%
@@ -40,6 +36,8 @@ df_annuel <- final_dataframe %>%
 
 # Aperçu des 5 dernières années pour vérifier
 kable(tail(df_annuel, 5), caption = "Aperçu des données agrégées par année")
+
+
 ```
 
 ```{r}
@@ -55,10 +53,8 @@ coefficient <- resume_modele$coefficients[2, 1] # On récupère la pente de la c
 print(paste("Corrélation entre Température et Fréquence :", round(correlation_temp_disaster, 3)))
 print(paste("Statistiquement, pour chaque augmentation de 1°C de la température moyenne, on observe", round(coefficient, 0), "catastrophes supplémentaires par an."))
 ```
+Le coefficient de 0.24 révèle une corrélation positive, confirmant que la fréquence des catastrophes a tendance à augmenter avec la température globale. Néanmoins, ce lien est modéré ce qui suggère que le réchauffement climatique agit comme un facteur aggravant sans être l'unique cause de chaque événement observé.
 
-```{r}
-
-```
 
 ```{r}
 # 1. On définit ce qu'est une année "Chaude" ou "Froide" par rapport à la médiane
@@ -81,3 +77,104 @@ kable(df_comparaison,
 ratio <- df_comparaison$Moyenne_Dommages[1] / df_comparaison$Moyenne_Dommages[2]
 # Note : Vérifiez l'ordre des lignes dans le tableau pour savoir qui diviser par qui !
 ```
+Nos calculs révèlent une différence fondamentale entre les dommages matériels et l'impact humain :
+
+Dommages Financiers : Contrairement aux idées reçues, notre analyse ne montre pas d'augmentation des coûts directs lors des années les plus chaudes ($4.2M contre $4.6M pour les années froides). Cela peut s'expliquer par la nature des catastrophes : les tempêtes hivernales ou les inondations froides détruisent souvent des infrastructures coûteuses (bâtiments, réseaux électriques).
+
+Mortalité : C'est ici que le lien avec le changement climatique devient alarmant. Les années caractérisées par des températures élevées enregistrent en moyenne 1770 décès par événement, contre seulement 360 lors des années plus froides.
+
+Ainsi si le réchauffement climatique ne se traduit pas systématiquement par une facture économique plus lourde dans cet échantillon, il multiplie par 5 la létalité des catastrophes. La chaleur tue plus qu'elle ne détruit de matériel.
+```{r}
+# 1. Création du dataframe (ou chargement de votre fichier)
+# J'utilise un nom explicite 'df_climat' pour éviter l'erreur 'closure'
+df_climat <- data.frame(
+  Year = c(2018, 2019, 2020, 2021, 2022),
+  Temp_Moyenne = c(17.56, 17.55, 17.68, 16.97, 18.25),
+  Total_Catastrophes = c(415, 102, 208, 112, 50),
+  Total_Dommages = c(820, 598, 791, 660, 60),
+  Total_Morts = c(23, 91, 19, 2, 6)
+)
+
+# 2. Création des nouvelles colonnes (Feature Engineering)
+
+# Coût moyen par catastrophe (Gravité économique)
+df_climat$Cout_Moyen_Cata <- df_climat$Total_Dommages / df_climat$Total_Catastrophes
+
+# Létalité moyenne (Gravité humaine)
+df_climat$Morts_Moyens_Cata <- df_climat$Total_Morts / df_climat$Total_Catastrophes
+
+# Ratio Dommage par Mort (Combien de dégâts pour 1 mort ?)
+# On gère le cas où Total_Morts serait 0 pour éviter une division par infini
+df_climat$Ratio_Dommage_Mort <- ifelse(df_climat$Total_Morts == 0, 0, 
+                                       df_climat$Total_Dommages / df_climat$Total_Morts)
+
+# Aperçu du résultat
+head(df_climat)
+```
+```{r}
+# Trouver l'index de l'année max pour le coût
+idx_cout_max <- which.max(df_climat$Cout_Moyen_Cata)
+annee_cout <- df_climat$Year[idx_cout_max]
+valeur_cout <- df_climat$Cout_Moyen_Cata[idx_cout_max]
+
+# Trouver l'index de l'année max pour les morts
+idx_mort_max <- which.max(df_climat$Morts_Moyens_Cata)
+annee_mort <- df_climat$Year[idx_mort_max]
+valeur_mort <- df_climat$Morts_Moyens_Cata[idx_mort_max]
+
+# Affichage des résultats dans la console
+cat("--- ANALYSE D'INTENSITÉ ---\n")
+cat(paste("L'année où les catastrophes ont coûté le plus cher (unitairement) est :", annee_cout, 
+          "\n -> Coût moyen :", round(valeur_cout, 2), "\n\n"))
+
+cat(paste("L'année où les catastrophes ont été les plus meurtrières (unitairement) est :", annee_mort, 
+          "\n -> Morts moyens :", round(valeur_mort, 2), "\n"))
+```
+```{r}
+# 1. Analyse temporelle (Tendances globales)
+summary(df_climat$Cout_Moyen_Cata)
+summary(df_climat$Morts_Moyens_Cata)
+
+# Calculer l'évolution (Pente de la tendance)
+# Si le coefficient (Estimate) de 'Year' est positif, la tendance est à la hausse
+modele_cout <- lm(Cout_Moyen_Cata ~ Year, data = df_climat)
+print(paste("Tendance Coût ($/an) :", coef(modele_cout)[2]))
+
+modele_mort <- lm(Morts_Moyens_Cata ~ Year, data = df_climat)
+print(paste("Tendance Morts (décès/an) :", coef(modele_mort)[2]))
+
+# 2. Analyse de la relation (Corrélation)
+correlation <- cor(df_climat$Cout_Moyen_Cata, df_climat$Morts_Moyens_Cata, use = "complete.obs")
+
+print(paste("Coefficient de corrélation :", round(correlation, 2)))
+# Interprétation :
+# Proche de 1 : Les coûts et les morts montent ensemble.
+# Proche de -1 : Quand le coût monte, les morts baissent (inverse).
+# Proche de 0 : Pas de lien direct.
+```
+Analyse de l'Intensité des Catastrophes : Coût vs Mortalité
+1. Tendances Temporelles : Une double décroissance
+Contrairement à l'intuition commune d'une aggravation constante, les modèles linéaires indiquent une tendance à la baisse pour les deux indicateurs sur la période observée :
+
+Indicateur Financier (Coût) : On observe une diminution moyenne de -0.15 unité par an. La médiane (3.80) est très proche de la moyenne (3.75), ce qui suggère une distribution des coûts assez régulière, sans valeurs extrêmes.
+
+Indicateur Humain (Morts) : La mortalité diminue également, mais plus lentement (-0.07 unité par an).
+
+2. Disparité de distribution (Le "Skew")
+Il existe une différence majeure dans la structure des données entre les deux variables :
+
+Les Coûts sont centrés : La moyenne et la médiane sont quasi identiques. Les coûts sont donc prévisibles et constants autour du centre.
+
+La Mortalité est asymétrique : La moyenne des décès (0.235) est plus de deux fois supérieure à la médiane (0.091).
+
+Cela signifie que la majorité des catastrophes font très peu de victimes (la médiane est basse), mais que quelques événements rares et très meurtriers (le max à 0.89) tirent la moyenne vers le haut.
+
+3. Relation entre Coût et Mortalité
+Le coefficient de corrélation de 0.48 indique une corrélation positive modérée.
+
+Il existe un lien : les catastrophes les plus coûteuses tendent généralement à être aussi les plus meurtrières.
+
+Cependant, ce lien n'est pas absolu. Cela suggère que certains événements peuvent être très coûteux (dégâts matériels) tout en causant peu de décès, signe probable de l'efficacité des systèmes d'alerte ou de la nature de la catastrophe (inondation lente vs tremblement de terre soudain).
+
+Conclusion
+L'analyse révèle un scénario positif où l'intensité moyenne des catastrophes diminue. Bien que les coûts et les pertes humaines soient liés, la forte asymétrie des décès suggère que la gestion des risques a réussi à réduire la mortalité pour la majorité des événements, à l'exception de quelques valeurs extrêmes qui restent difficiles à maîtriser.
