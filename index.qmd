@@ -1,11 +1,11 @@
---- 
+---
 title: "Projet Météo et Climat" 
 format: html 
 ---
 
 <H1><u>Bienvenue sur notre projet climatique !</u></H1>
 
-![Climate changes](Change climate.webp){width="650px" height="450px"}
+![Climate changes](Change%20climate.webp){width="650px" height="450px"}
 
 Ce projet à été réalisé par <b>BRISSON Thomas</b>, <b>BASSET Maxence</b>, <b>DIAZ Mathys</b>, <b>NASSUR CHEIKH Izdihar</b> et <b>RODRIGUEZ Jason</b> dans le but d'établir un lien entre le changement climatiques et la fréquence des catastrophes naturelles.
 
@@ -19,7 +19,4 @@ L’année 2025 montre encore de nombreux exemples d'événements extrêmes : ca
 
 <H1><u>Comment le projet fonctionne ?</u></H1>
 
-Données météorologiques collectées et analysées.
-Visualisations interactives pour comprendre les tendances.
-Explications basées sur la littérature scientifique.
-Naviguez vers les autres pages pour découvrir nos analyses, nos visualisations et nos conclusions !
+Données météorologiques collectées et analysées. Visualisations interactives pour comprendre les tendances. Explications basées sur la littérature scientifique. Naviguez vers les autres pages pour découvrir nos analyses, nos visualisations et nos conclusions !

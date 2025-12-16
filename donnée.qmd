@@ -1,9 +1,8 @@
 ---
-title: "Analyse de données"
+title: "Analyse par les graphiques"
 ---
 
-Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc.
-Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
+Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc. Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
 
 ```{r}
 library(dplyr)
@@ -25,7 +24,6 @@ ggplot(df_temp_annuelle, aes(x = factor(year), y = mean_celsius_year)) +
   scale_x_discrete(labels = function(x) substr(x, 3, 4)) +  # Affiche les deux derniers chiffres de l'année
   theme_classic(base_size = 15)
 ```
-
 
 Ce premier graphique illustre la difficulté d’établir un lien direct entre le réchauffement climatique et l’évolution des désastres climatiques sur une période d’observation relativement courte. Bien que le réchauffement global soit avéré scientifiquement et mesurable sur le long terme, les différences de température entre années successives restent minimes sur une échelle annuel d'une dizaine d'année (seuelement).
 
@@ -49,6 +47,7 @@ ggplot(df_compare, aes(x = global_month_avg, y = mean_celsius, color = annee, sh
   ) +
   theme_minimal(base_size = 15)
 ```
+
 Typiquement, dans ce graphique, on isole l'année 1996 (la première de notre jeu de données) et l'année 2022 (la dernière du même jeu). Chaque point représente un mois de l'année en question. La diagonale en pointillés représente la situation d’égalité : c'est la ligne où la température locale mensuelle serait exactement égale à la température globale moyenne pour ce mois. Autrement dit, chaque point au-dessus de cet axe correspond à un mois plus chaud que la moyenne globale du jeu, et inversement pour les points situés en dessous.
 
 L'analyse directe que l'on peut tirer de ce graphique est la suivante : en 1996, il a globalement fait plus froid que la moyenne du jeu de données pour presque chaque mois, tandis qu’en 2022, il a fait plus globalement plus chaud pour les mêmes mois. Ce type de comparaison permet de visualiser très concrètement le réchauffement climatique sur la période considérée.
@@ -72,6 +71,7 @@ ggplot(df_year, aes(x = factor(year), y = total_disasters_year)) +
     breaks = seq(0, 10, 2)  # de 0 à 10, par pas de 2 ; ajuste si besoin
   ) 
 ```
+
 Ce graphique illustre la difficulté à observer le réchauffement climatique à travers la fréquence des désastres sur la période étudiée. En effet, on remarque que le nombre de désastres climatiques varie fortement d'une année à l'autre et dépend probablement d'autres facteurs que la seule température moyenne. Il est important de préciser que nous ne disons pas qu’il n’existe aucun lien entre le réchauffement climatique et la fréquence des désastres écologiques. Nous constatons simplement qu’il est difficile de discerner un lien direct entre les deux sur cette période relativement courte.
 
 On observe toutefois qu’à partir de 2018, le nombre moyen de désastres semble globalement plus élevé que celui des années précédentes.
@@ -95,6 +95,7 @@ ggplot(df_morts_mois, aes(x = factor(month), y = total_deaths_month, fill = tota
   ) +
   theme_minimal(base_size = 16)
 ```
+
 Typiquement, ce graphique mettant en relation le nombre de morts dus aux désastres écologiques et les mois de l’année fait immédiatement ressortir la surreprésentation du nombre de décès en août. Cette donnée permet d’identifier facilement quel désastre écologique a été le plus mortel en France ces dernières années : il s'agit évidemment de la canicule. En effet, la canicule est une des conséquences directes du réchauffement climatique : avec la hausse générale des températures, les épisodes de chaleur extrême deviennent plus fréquents, plus intenses et durent plus longtemps.
 
 Par exemple, la canicule de 2003 reste la plus meurtrière de l’histoire en France. Selon des sources officielles (Inserm, Météo France), on estime le nombre de décès à environ 19490 au mois d’août 2003 suite à cet épisode climatique exceptionnel. Ce triste bilan a incité toute la société française à prendre des mesures pour se protéger lors des futures périodes de fortes chaleurs, afin d’éviter qu’une telle catastrophe humaine ne se reproduise. Il s’agit d’une véritable prise de conscience collective.
@@ -117,9 +118,8 @@ ggplot(df_damages_bubble, aes(x = year, y = 1, size = total_damages_year)) +
 
 ```
 
-Ce dernier graphique montre la valeur en dollars des dégâts causés par les catastrophes climatiques. Il prend en compte toutes les dépenses liées à ces événements, exprimées en milliers de dollars. Ce que l’on constate surtout, c’est qu’au fil des années, le montant des dépenses suite aux catastrophes naturelles tend à augmenter. On observe qu’avant les années 2010, certaines années présentaient des volumes de dépenses particulièrement élevés, mais il existait aussi des années sans aucune dépense. À partir de 2010, même si le volume des dépenses fluctue moins fortement, il subsiste à un niveau minimal de dépenses chaque année, signe que les dégâts sont désormais quasi systématiques. 
+Ce dernier graphique montre la valeur en dollars des dégâts causés par les catastrophes climatiques. Il prend en compte toutes les dépenses liées à ces événements, exprimées en milliers de dollars. Ce que l’on constate surtout, c’est qu’au fil des années, le montant des dépenses suite aux catastrophes naturelles tend à augmenter. On observe qu’avant les années 2010, certaines années présentaient des volumes de dépenses particulièrement élevés, mais il existait aussi des années sans aucune dépense. À partir de 2010, même si le volume des dépenses fluctue moins fortement, il subsiste à un niveau minimal de dépenses chaque année, signe que les dégâts sont désormais quasi systématiques.
 
 Ce constat est d’autant plus frappant si l’on prend en compte le progrès technique dans le secteur du bâtiment par exemple. En effet, tous les nouveaux bâtiments sont conçus pour mieux résister aux risques écologiques propres à leur région. Pourtant, il y a chaque année de grosses dépenses liées aux tempêtes ou autres événements extrêmes, ce qui traduit la violence croissante des catastrophes récentes, dépassant les avancées techniques et les dispositifs de prévention mis en place.
 
 En effet, si les catastrophes climatiques conservaient chaque année un même niveau d’intensité, le montant des dépenses liées à leurs impacts aurait tendance à diminuer progressivement, grâce au progrès technique et aux mesures d’adaptation (construction plus résistante, infrastructures modernisées, meilleures préventions). C'est pourquoi on en déduit donc que les catastrophes climatiques sont de plus en plus violentes.
-

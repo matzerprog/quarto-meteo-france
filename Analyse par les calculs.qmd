@@ -1,0 +1,83 @@
+---
+title: "Analyse par les calculs"
+---
+
+```         
+```
+
+```{r}
+library(readr)
+
+# Remplacez ceci par VOTRE chemin que vous venez de copier
+# N'oubliez pas de changer les \ en /
+chemin_fichier <- "D:/Users/Maxence/Documents/M1 IREF/quarto-meteo-france/donnee et data frame final/final_dataframe.csv"
+
+final_dataframe <- read_csv(chemin_fichier)
+
+head(final_dataframe)
+```
+
+```{r}
+# Regardez vos noms de colonnes exacts
+colnames(final_dataframe)
+```
+
+Transformation en données annuel pour l'analyse
+
+```{r}
+library(dplyr)
+library(knitr)
+
+# On crée un résumé par année (Somme des catastrophes, Moyenne des températures)
+df_annuel <- final_dataframe %>%
+  group_by(year) %>%
+  summarise(
+    Temp_Moyenne = mean(mean_celsius, na.rm = TRUE),
+    Total_Catastrophes = sum(total_disasters, na.rm = TRUE),
+    Total_Dommages = sum(total_damages, na.rm = TRUE),
+    Total_Morts = sum(total_deaths, na.rm = TRUE)
+  )
+
+# Aperçu des 5 dernières années pour vérifier
+kable(tail(df_annuel, 5), caption = "Aperçu des données agrégées par année")
+```
+
+```{r}
+# 1. Calcul du coefficient de corrélation (Entre la température et le nombre de désastres)
+correlation_temp_disaster <- cor(df_annuel$Temp_Moyenne, df_annuel$Total_Catastrophes, use = "complete.obs")
+
+# 2. Modèle statistique : De combien les catastrophes augmentent quand la température monte de 1°C ?
+modele_occurrence <- lm(Total_Catastrophes ~ Temp_Moyenne, data = df_annuel)
+resume_modele <- summary(modele_occurrence)
+coefficient <- resume_modele$coefficients[2, 1] # On récupère la pente de la courbe
+
+# Affichage des résultats pour le site
+print(paste("Corrélation entre Température et Fréquence :", round(correlation_temp_disaster, 3)))
+print(paste("Statistiquement, pour chaque augmentation de 1°C de la température moyenne, on observe", round(coefficient, 0), "catastrophes supplémentaires par an."))
+```
+
+```{r}
+
+```
+
+```{r}
+# 1. On définit ce qu'est une année "Chaude" ou "Froide" par rapport à la médiane
+mediane_temp <- median(df_annuel$Temp_Moyenne, na.rm = TRUE)
+
+df_comparaison <- df_annuel %>%
+  mutate(Type_Annee = ifelse(Temp_Moyenne > mediane_temp, "Années Plus Chaudes", "Années Plus Froides")) %>%
+  group_by(Type_Annee) %>%
+  summarise(
+    Moyenne_Dommages = mean(Total_Dommages, na.rm = TRUE),
+    Moyenne_Morts = mean(Total_Morts, na.rm = TRUE)
+  )
+
+# 2. Affichage du tableau de preuves
+kable(df_comparaison, 
+      col.names = c("Type d'année", "Dommages Moyens ($)", "Décès Moyens"),
+      caption = "Impact de la température sur la gravité des catastrophes")
+
+# 3. Calcul du ratio (Combien de fois c'est pire ?)
+ratio <- df_comparaison$Moyenne_Dommages[1] / df_comparaison$Moyenne_Dommages[2]
+# Note : Vérifiez l'ordre des lignes dans le tableau pour savoir qui diviser par qui !
+```
