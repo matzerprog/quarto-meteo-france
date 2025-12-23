@@ -20,3 +20,4 @@ L’année 2025 montre encore de nombreux exemples d'événements extrêmes : ca
 <H1><u>Comment le projet fonctionne ?</u></H1>
 
 Données météorologiques collectées et analysées. Visualisations interactives pour comprendre les tendances. Explications basées sur la littérature scientifique. Naviguez vers les autres pages pour découvrir nos analyses, nos visualisations et nos conclusions !
+
