@@ -2,6 +2,9 @@
 title: "Analyse par les graphiques"
 ---
 
+```{r}
+library(tidyverse) ; # loads core libraries for data manipulation
+```
 Dans cette partie nous allons analyser le lien entre le réchauffement climatique et les catastrophes naturelles au sens large, c'est-à-dire, leurs fréquences, leurs conséquences etc. Pour cela on va donc ici utiliser divers graphique bivarié qui vont mettre en avant les différents liens entre les variables
 
 ```{r}
