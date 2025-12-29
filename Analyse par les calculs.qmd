@@ -1,5 +1,5 @@
 ---
-title: "Analyse par les calculs"
+title: "analyse-calculs"
 ---
 
 ```         
