@@ -10,7 +10,7 @@ Dans cette partie nous allons analyser le lien entre le réchauffement climatiqu
 ```{r}
 chemin_fichier <- "D:/Users/Maxence/Documents/M1 IREF/quarto-meteo-france/donnee et data frame final/final_dataframe.csv"
 
-final_dataframe <- read_csv(chemin_fichier)
+final_dataframe <- read_csv("donnee et data frame final/final_dataframe.csv") ; # loads csv
 
 head(final_dataframe)
 ```

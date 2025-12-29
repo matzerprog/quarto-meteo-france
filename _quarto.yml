@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Analyse Météo France"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Accueil
+      - href: about.qmd
+        text: À propos
+      - href: donnees.qmd
+        text: Données
+      - href: analyse-calculs.qmd
+        text: Analyses
+
+format:
+  html:
+    theme: cosmo
+    toc: true

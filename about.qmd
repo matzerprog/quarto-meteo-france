@@ -5,15 +5,15 @@ title: "statistique sur les donnée"
 About this site
 
 ```{r}
-library(readr)
-catastrophes <- read_csv("catastrophes.csv")
-synop_csv <- read_csv("synop.csv.gz")
+library(tidyverse) ; # loads core libraries for data manipulation
+catastrophes <- read_csv("donnee et data frame final/catastrophes.csv") ; # imports catastrophes data
+synop_csv <- read_csv("donnee et data frame final/synop.csv.gz") ; # imports synop data
 ```
 
 You need to end up with a data set containing monthly data for the following variables: • year • month • average temperature of the month in Celsius degrees • gap between the month’s temperature (variable above) and the overall average temperatures for this month (across all years) • total number of natural disasters in France for this month • total number of damages, in dollars, in France for this month • total number of deaths in France for this month
 
 ```{r}
-library(data.table)
-data <- fread("synop.csv.gz")
-
+library(data.table) ; # loads package for fast data reading
+library(R.utils) ; # activates support for gz compressed files
+data <- fread("donnee et data frame final/synop.csv.gz") ; # reads synop file from data folder
 ```
