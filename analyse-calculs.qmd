@@ -16,12 +16,16 @@ library(tidyverse) ; # loads core libraries for data manipulation
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 
-chemin_fichier <- "D:/Users/Maxence/Documents/M1 IREF/quarto-meteo-france/donnee et data frame final/final_dataframe.csv"
+library(tidyverse)
 
-final_dataframe <- read_csv("donnee et data frame final/final_dataframe.csv") ; # loads csv
+# Chargement du fichier avec le chemin relatif
+final_dataframe <- read_csv("donnee et data frame final/final_dataframe.csv", show_col_types = FALSE)
 
-head(final_dataframe)
+# Affichage du tableau propre
+knitr::kable(head(final_dataframe))
 ```
 
 
