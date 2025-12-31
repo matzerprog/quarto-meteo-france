@@ -1,5 +1,9 @@
 ---
 title: "Analyse par les graphiques"
+execute:
+  echo: true    # Garde ton code visible (si tu le souhaites)
+  warning: false # Cache les messages orange (conflits)
+  message: false # Cache les messages de chargement (tidyverse)
 ---
 
 ```{r}
