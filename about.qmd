@@ -1,9 +1,5 @@
 ---
 title: "Statistique sur les donnée"
-execute:
-  echo: true    # Garde ton code visible (si tu le souhaites)
-  warning: false # Cache les messages orange (conflits)
-  message: false # Cache les messages de chargement (tidyverse)
 ---
 
 About this site
