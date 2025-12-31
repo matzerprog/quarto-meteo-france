@@ -11,7 +11,7 @@ library(tidyverse) ; # loads core libraries for data manipulation
 ```
 <H1><u>Bienvenue sur notre projet climatique !</u></H1>
 
-![](autre/Change climate.webp){width="650px" height="450px"}
+![](change_climate.webp){width="650px" height="450px"}
 
 Ce projet à été réalisé par <b>BRISSON Thomas</b>, <b>BASSET Maxence</b>, <b>DIAZ Mathys</b>, <b>NASSUR CHEIKH Izdihar</b> et <b>RODRIGUEZ Jason</b> dans le but d'établir un lien entre le changement climatiques et la fréquence des catastrophes naturelles.
 
