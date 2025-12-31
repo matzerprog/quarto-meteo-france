@@ -4,7 +4,10 @@ project:
 
 website:
   title: "Analyse Météo France"
+  # Personnalisation de la barre de navigation
   navbar:
+    background: primary # Utilise la couleur principale du thème (Bleu pour Cosmo)
+    type: dark          # Texte blanc sur fond coloré pour un look moderne
     left:
       - href: index.qmd
         text: Accueil
@@ -19,3 +22,12 @@ format:
   html:
     theme: cosmo
     toc: true
+    toc-title: "Sur cette page" # Traduit le titre de la table des matières
+    code-fold: true             # Masque le code par défaut (on clique pour le voir)
+    code-summary: "Afficher le code R"
+    lang: fr                    # Définit le site en français
+
+# Cette section règle ton problème de "bruit" technique sur la page
+execute:
+  warning: false  # Masque les messages d'avertissement orange
+  message: false  # Masque les messages de chargement (ex: tidyverse)
